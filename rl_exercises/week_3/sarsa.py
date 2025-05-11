@@ -135,7 +135,7 @@ class SARSAAgent(AbstractAgent):
         if done:
             return self.Q[state][action]
 
-        self.Q[state][action] = self.Q[state][action] + self.alpha * (
+        self.Q[state][action] += self.alpha * (
             reward
             + self.gamma * self.Q[next_state][next_action]
             - self.Q[state][action]

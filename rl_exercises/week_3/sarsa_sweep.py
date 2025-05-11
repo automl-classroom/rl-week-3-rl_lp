@@ -35,22 +35,21 @@ def run_episodes(agent, env, num_episodes=5):
     # Extend it to run multiple episodes and store the total discounted rewards in a list.
     # Finally, return the mean discounted reward across episodes.
 
-    total = []
-    state, _ = env.reset()
-    done = False
-    action = agent.predict_action(state)
-
-    gamma = 0.5
-    for episode in range(0, num_episodes):
-        total.append(0)
+    total_reward = []
+    for episode in range(num_episodes):
+        total = 0.0
+        state, _ = env.reset()
+        done = False
+        action = agent.predict_action(state)
         while not done:
             next_state, reward, term, trunc, _ = env.step(action)
             done = term or trunc
             next_action = agent.predict_action(next_state)
             agent.update_agent(state, action, reward, next_state, next_action, done)
-            total[episode] = reward + gamma * total[episode]
+            total += reward
             state, action = next_state, next_action
-    return total
+        total_reward.append(total)
+    return total_reward
 
 
 # Decorate the function with the path of the config file and the particular config to use
